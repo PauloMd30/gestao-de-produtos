@@ -1,0 +1,133 @@
+<form
+  class="c-form"
+  {%
+  if
+  produto
+  %}
+  action="{{ url_for('produto.atualizar_produto', produto_id=produto.id) }}"
+  {%
+  else
+  %}
+  action="{{ url_for('produto.inserir_produto') }}"
+  {%
+  endif
+  %}
+  method="{% if produto %}PUT{% else %}POST{% endif %}"
+  {%
+  if
+  produto
+  %}
+  c-swap="#produto-{{produto.id}}"
+  {%
+  else
+  %}
+  c-append="#lista_de_produtos"
+  {%
+  endif
+  %}
+  c-reload-container="true"
+>
+  <div class="mb-3">
+    <label for="exampleInputnome" class="form-label">Nome</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputnome"
+      aria-describedby="nomeHelp"
+      required
+      name="nome"
+      {%
+      if
+      produto
+      %}value="{{produto.nome}}"
+      {%
+      endif
+      %}
+    />
+    <div id="nomeHelp" class="form-text">Digite o nome do produto.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputmarca" class="form-label">Marca</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputmarca"
+      required
+      name="marca"
+      {%
+      if
+      produto
+      %}value="{{produto.marca}}"
+      {%
+      endif
+      %}
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputcodigo" class="form-label">Código de Barras</label>
+    <input
+      type="number"
+      class="form-control"
+      id="exampleInputcodigo"
+      required
+      name="codigo de barras"
+      {%
+      if
+      produto
+      %}value="{{produto.codigo_de_barras}}"
+      {%
+      endif
+      %}
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="Data de Validade" class="form-label">Data de Validade</label>
+    <input
+      type="date"
+      class="form-control"
+      id="Data de Validade"
+      required
+      name="data validade"
+      {%
+      if
+      produto
+      %}value="{{produto.data_de_validade}}"
+      {%
+      endif
+      %}
+    />
+  </div>
+
+  <div class="button-container mt-3">
+    <button type="submit" class="btn btn-primary">
+      {% if produto %}Salvar{% else %}Adicionar Produto{% endif %}
+    </button>
+
+    <!-- Botão Consultar Todos os Produtos -->
+
+    <button
+      c-get="{{url_for('produto.listar_produtos')}}"
+      c-callback="updateTitle"
+      data-title="Lista de Todos os Produtos"
+      type="button"
+      class="btn btn-primary"
+      c-target="#produto-container"
+    >
+      Consultar Todos os Produtos
+    </button>
+
+    <button
+      c-get="{{url_for('produto.consultar_por_validade_proxima')}}"
+      c-callback="updateTitle"
+      data-title="Produtos Próximos da Validade"
+      type="button"
+      class="btn btn-primary"
+      c-target="#produto-container"
+    >
+      Consultar Produtos por Validade
+    </button>
+  </div>
+</form>
