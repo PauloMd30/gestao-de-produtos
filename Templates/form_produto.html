@@ -107,10 +107,27 @@
     </button>
 
     <!-- Botão Consultar Todos os Produtos -->
-    <a href="{{ url_for('produto.listar_produtos') }}">
-      <button type="button" class="btn btn-secondary">
-        Consultar Todos os Produtos
-      </button>
-    </a>
+
+    <button
+      c-get="{{url_for('produto.listar_produtos')}}"
+      c-callback="updateTitle"
+      data-title="Lista de Todos os Produtos"
+      type="button"
+      class="btn btn-primary"
+      c-target="#produto-container"
+    >
+      Consultar Todos os Produtos
+    </button>
+
+    <button
+      c-get="{{url_for('produto.consultar_por_validade_proxima')}}"
+      c-callback="updateTitle"
+      data-title="Produtos Próximos da Validade"
+      type="button"
+      class="btn btn-primary"
+      c-target="#produto-container"
+    >
+      Consultar Produtos por Validade
+    </button>
   </div>
 </form>

@@ -18,3 +18,4 @@ def configure_db():
     if db.is_closed():
         db.connect()
     db.create_tables([Produto])
+

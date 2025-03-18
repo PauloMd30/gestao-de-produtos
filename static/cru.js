@@ -154,3 +154,14 @@ const $cru = (e) => document.querySelector(e),
   $cruTypeResponse = async (e, t) =>
     "html" == e ? await t.text() : await t.json();
 $C();
+
+// Callback para atualizar o título
+$cruCallback("updateTitle", (data, target) => {
+  const button = document.activeElement; // Captura o botão clicado
+  const newTitle = button.getAttribute("data-title"); // Pega o título do atributo data-title
+  const titleElement = document.getElementById("page-title"); // Seleciona o título
+
+  if (newTitle && titleElement) {
+    titleElement.textContent = newTitle; // Atualiza o título
+  }
+});

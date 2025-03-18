@@ -21,11 +21,9 @@
         c-container="{{url_for('produto.form_produto')}}"
       ></div>
       <hr />
-      <h2 class="text-center">Produtos Próximo da Validade</h2>
+      <h2 id="page-title" class="text-center">Produtos Próximos da Validade</h2>
       <!-- consulta por valideda-->
-      <div c-container="{{url_for('produto.consultar_por_validade_proxima')}}"></div>
-
-     
+      <div id="produto-container" c-container="{{url_for('produto.consultar_por_validade_proxima')}}"> </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -89,3 +89,4 @@ def deletar_produto(produto_id):
     produto = Produto.get_by_id(produto_id)
     produto.delete_instance()
     return('produto deletado com sucesso')
+
