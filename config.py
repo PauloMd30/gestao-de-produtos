@@ -1,7 +1,7 @@
-from routes.home import route_home
-from routes.produto import route_produto
-from Database.produto_db import db 
-from Database.models.produto import Produto
+from api.routes import route_home
+from api.routes import route_produto
+from api.Database import db 
+from api.Database import Produto
 def configure_all(app):
     configure_routes(app)
     configure_db()
