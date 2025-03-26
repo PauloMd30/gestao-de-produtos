@@ -1,11 +1,8 @@
-from peewee import Model, CharField, DateField
-from Database.produto_db import db
+from mongoengine import Document, StringField, DateField
 
-class Produto(Model):
-    nome = CharField()
-    marca = CharField()
-    codigo_de_barras = CharField()
+# Definir o modelo do Produto com mongoengine
+class Produto(Document):
+    nome = StringField(required=True)
+    marca = StringField(required=True)
+    codigo_de_barras = StringField(required=True)
     data_de_validade = DateField()
-
-    class Meta:
-        database = db

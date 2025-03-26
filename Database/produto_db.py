@@ -1,22 +1,23 @@
-from peewee import MySQLDatabase
+from mongoengine import connect, Document, StringField, DateField
 from dotenv import load_dotenv
 import os
 
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()
 
-# Obter as variáveis de ambiente
-db_name = os.getenv('DB_NAME')
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_port = int(os.getenv('DB_PORT'))
+# Obter a URI de conexão do MongoDB
+db_uri = os.getenv('DB_URI')  # A string completa de conexão
 
-# Configurar a conexão com o banco de dados
-db = MySQLDatabase(
-    database=db_name,
-    user=db_user,
-    password=db_password,
-    host=db_host,
-    port=db_port
-)
+# Conectar ao MongoDB usando a URI
+try:
+    connect(host=db_uri)
+    print("Conexão com MongoDB bem-sucedida!")
+except Exception as e:
+    print(f"Erro ao conectar com o MongoDB: {e}")
+
+# Definir o modelo Produto
+class Produto(Document):
+    nome = StringField(required=True)
+    marca = StringField(required=True)
+    codigo_de_barras = StringField(required=True)
+    data_de_validade = DateField()
