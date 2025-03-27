@@ -6,3 +6,4 @@ gunicorn==23.0.0
 python-dotenv==1.0.1
 pymongo==4.11.3
 mongoengine==0.29.1
+certifi==2025.1.31

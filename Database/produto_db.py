@@ -1,6 +1,7 @@
 from mongoengine import connect, Document, StringField, DateField
 from dotenv import load_dotenv
 import os
+import certifi
 
 # Carregar as variáveis de ambiente do arquivo .env
 load_dotenv()
@@ -8,9 +9,9 @@ load_dotenv()
 # Obter a URI de conexão do MongoDB
 db_uri = os.getenv('DB_URI')  # A string completa de conexão
 
-# Conectar ao MongoDB usando a URI
+# Conectar ao MongoDB usando a URI e o certificado SSL
 try:
-    connect(host=db_uri)
+    connect(host=db_uri, tlsCAFile=certifi.where())
     print("Conexão com MongoDB bem-sucedida!")
 except Exception as e:
     print(f"Erro ao conectar com o MongoDB: {e}")
