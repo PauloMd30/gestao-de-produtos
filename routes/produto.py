@@ -3,8 +3,6 @@ from datetime import datetime, timedelta, date
 from Database import Produto  # Certifique-se de importar o modelo Produto
 from bson.objectid import ObjectId  # Import ObjectId para conversão
 
-route_produto = Blueprint("produto", __name__)
-
 
 route_produto = Blueprint("produto", __name__)
 # rota para consultar produtos com validade proxima
