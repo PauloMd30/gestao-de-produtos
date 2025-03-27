@@ -4,7 +4,7 @@ route_home = Blueprint("home", __name__)
 
 @route_home.route("/")
 def home():
-     return render_template("index.html")
+     return render_template("templates/index.html")
 
 
 from flask import Blueprint, render_template, request
