@@ -1,24 +1,26 @@
-<tr id="produto-{{ produto.id if produto.id }}">
-  <th scope="row">{{ produto.id if produto.id }}</th>
-  <td>{{ produto.nome }}</td>
-  <td>{{ produto.marca }}</td>
-  <td>{{ produto.codigo_de_barras }}</td>
-  <td>{{ produto.data_de_validade }}</td>
-  <td>
-    <button
-      class="btn btn-primary"
-      c-get="{{url_for('produto.form_edit_produto', produto_id=produto.id)}}"
-      c-target="#edit-produto"
-    >
-      Editar
-    </button>
+<div class="table-responsive">
+  <tr id="produto-{{ produto.id if produto.id }}">
+    <th scope="row">{{ produto.id if produto.id }}</th>
+    <td>{{ produto.nome }}</td>
+    <td>{{ produto.marca }}</td>
+    <td>{{ produto.codigo_de_barras }}</td>
+    <td>{{ produto.data_de_validade }}</td>
+    <td>
+      <button
+        class="btn btn-primary"
+        c-get="{{url_for('produto.form_edit_produto', produto_id=produto.id)}}"
+        c-target="#edit-produto"
+      >
+        Editar
+      </button>
 
-    <button
-      class="btn btn-danger"
-      c-delete="{{url_for('produto.deletar_produto', produto_id=produto.id)}}"
-      c-remove-closest="tr"
-    >
-      Deletar
-    </button>
-  </td>
-</tr>
+      <button
+        class="btn btn-danger"
+        c-delete="{{url_for('produto.deletar_produto', produto_id=produto.id)}}"
+        c-remove-closest="tr"
+      >
+        Deletar
+      </button>
+    </td>
+  </tr>
+</div>
