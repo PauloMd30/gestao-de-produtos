@@ -1,37 +1,85 @@
 <style>
+  /* Estilo para a tabela */
   .table {
     width: 100%;
     border-collapse: collapse;
   }
+
   button {
     margin: 5px;
     gap: 5px;
   }
 
+  /* Cabeçalho da tabela */
   .table thead th {
     background-color: #343a40;
     color: #ffffff;
     text-align: center;
   }
 
+  /* Alteração de fundo para linhas pares e ímpares */
   .table tbody tr:nth-child(odd) {
-    background-color: none;
+    background-color: #f9f9f9; /* Adicionando uma cor de fundo para as linhas ímpares */
   }
 
   .table tbody tr:nth-child(even) {
-    background-color: none;
+    background-color: #e9ecef; /* Cor para as linhas pares */
   }
 
+  /* Definindo a borda para a tabela */
   .table,
   .table th,
   .table td {
     border: 1px solid #dee2e6;
   }
 
+  /* Estilo para células da tabela */
   .table th,
   .table td {
     padding: 12px;
     text-align: left;
+  }
+
+  /* Tornando a tabela responsiva */
+  .table-responsive {
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Para Internet Explorer e Edge */
+  }
+
+  /* Ajuste para telas menores */
+  @media (max-width: 768px) {
+    .table th,
+    .table td {
+      padding: 8px;
+    }
+  }
+
+  /* Usando @supports para garantir que as propriedades só sejam aplicadas quando suportadas */
+  @supports (scrollbar-width: thin) {
+    .table-responsive {
+      scrollbar-width: thin; /* Para Firefox */
+      scrollbar-color: #343a40 transparent; /* Para Firefox */
+    }
+  }
+
+  /* Fallback para navegadores Webkit (Chrome, Safari) */
+  @supports (-webkit-overflow-scrolling: touch) {
+    .table-responsive {
+      -webkit-overflow-scrolling: touch; /* Para navegadores Webkit (Chrome, Safari) */
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background-color: #343a40;
+      border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
   }
 </style>
 
