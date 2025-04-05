@@ -1,12 +1,18 @@
-/* Estilo para a tabela */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
+/* Estilo para os botões */
 button {
   margin: 5px;
   gap: 5px;
+  display: inline-block; /* Garantir que os botões se comportem corretamente */
+  visibility: visible; /* Garantir que os botões sejam visíveis */
+  position: relative; /* Garantir que o botão tenha o posicionamento correto */
+  z-index: 1; /* Colocar os botões na parte superior */
+}
+
+/* Estilo para a tabela */
+.table {
+  width: 100%;
+  table-layout: auto; /* Usar auto para permitir que as colunas ajustem o tamanho com base no conteúdo */
+  border-collapse: collapse;
 }
 
 /* Cabeçalho da tabela */
@@ -18,11 +24,7 @@ button {
 
 /* Alteração de fundo para linhas pares e ímpares */
 .table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9; /* Adicionando uma cor de fundo para as linhas ímpares */
-}
-.table {
-  width: 100%;
-  table-layout: fixed; /* Garantir que a tabela tenha largura fixa e não se ajuste automaticamente */
+  background-color: #f9f9f9; /* Cor para as linhas ímpares */
 }
 
 .table tbody tr:nth-child(even) {
@@ -34,15 +36,16 @@ button {
 .table th,
 .table td {
   border: 1px solid #dee2e6;
-}
-
-/* Estilo para células da tabela */
-.table th,
-.table td {
   padding: 12px;
   text-align: left;
+  word-wrap: break-word; /* Quebrar palavras longas que não cabem */
 }
-
+/* Largura responsiva para as células */
+.table td,
+.table th {
+  min-width: 100px; /* Definir uma largura mínima */
+  word-wrap: break-word;
+}
 /* Tornando a tabela responsiva */
 .table-responsive {
   overflow-x: auto;
