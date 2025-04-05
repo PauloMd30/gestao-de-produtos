@@ -1,13 +1,4 @@
 /* Estilo para os botões */
-button {
-  margin: 5px;
-  gap: 5px;
-  display: inline-block; /* Garantir que os botões se comportem corretamente */
-  visibility: visible; /* Garantir que os botões sejam visíveis */
-  position: relative; /* Garantir que o botão tenha o posicionamento correto */
-  z-index: 1; /* Colocar os botões na parte superior */
-}
-
 /* Estilo para a tabela */
 .table {
   width: 100%;
@@ -40,12 +31,14 @@ button {
   text-align: left;
   word-wrap: break-word; /* Quebrar palavras longas que não cabem */
 }
+
 /* Largura responsiva para as células */
 .table td,
 .table th {
   min-width: 100px; /* Definir uma largura mínima */
   word-wrap: break-word;
 }
+
 /* Tornando a tabela responsiva */
 .table-responsive {
   overflow-x: auto;
@@ -79,6 +72,18 @@ button {
   /* Reduzir as células de cabeçalho de forma similar */
   .table th {
     font-size: 2.8vw;
+  }
+
+  /* Ajustar o tamanho dos botões para telas menores */
+  button {
+    font-size: 3vw; /* Ajustar o tamanho da fonte dos botões */
+    padding: 8px; /* Ajustar o padding dos botões */
+  }
+
+  /* Remover a coluna de ID em telas menores */
+  .table th:nth-child(1),
+  .table td:nth-child(1) {
+    display: none; /* Esconder a primeira coluna (ID) */
   }
 }
 
