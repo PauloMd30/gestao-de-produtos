@@ -56,7 +56,7 @@ button {
 }
 
 /* Garantir que o conteúdo seja redimensionado com a largura da tela */
-@media (max-width: 769px) {
+@media (max-width: 1000px) {
   .table td,
   .table th {
     /* Ajuste do tamanho da fonte com base na largura da tela */
