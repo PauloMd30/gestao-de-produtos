@@ -1,4 +1,4 @@
-from mongoengine import connect, Document, StringField, DateField
+from mongoengine import connect, Document, StringField, DateField, BooleanField
 from dotenv import load_dotenv
 import os
 import certifi
@@ -29,3 +29,4 @@ class Produto(Document):
     marca = StringField(required=True)
     codigo_de_barras = StringField(required=True)
     data_de_validade = DateField()
+    notificado = BooleanField(default=False) 
