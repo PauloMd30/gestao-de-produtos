@@ -89,7 +89,6 @@ def notificar_produto_periodicamente():
     # Log final indicando o dia em que as notificações foram enviadas
     print(f"Notificações enviadas em {hoje}")
 
-notificar_produto_periodicamente()  # Chama a função para enviar notificações imediatamente ao iniciar o aplicativo
 
 # Configuração do APScheduler para rodar a cada 24 horas
 scheduler = BackgroundScheduler()
