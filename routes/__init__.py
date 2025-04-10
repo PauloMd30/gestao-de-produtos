@@ -96,10 +96,7 @@ def notificar_produto_periodicamente():
 
 # Configuração do APScheduler para rodar a cada 24 horas
 scheduler = BackgroundScheduler()
-scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=12) # Ajuste o intervalo conforme necessário
-scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=12)  
-if not scheduler.running:
-    scheduler.start()
+
 
 
 # inserindo um produto 

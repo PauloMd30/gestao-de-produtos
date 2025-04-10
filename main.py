@@ -1,5 +1,6 @@
 from flask import Flask
 from config import configure_all
+import scheduler_startup
 
 
 app= Flask(__name__)
