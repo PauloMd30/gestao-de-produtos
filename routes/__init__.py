@@ -6,14 +6,18 @@ route_home = Blueprint("home", __name__)
 def home():
      return render_template("index.html")
 
-
+import os
 from flask import Blueprint, render_template, request
 from datetime import datetime, timedelta, date
 from Database import Produto  # Certifique-se de importar o modelo Produto
 from bson.objectid import ObjectId  # Import ObjectId para conversão
 from whatsapp import enviar_mensagem_whatsapp
 from apscheduler.schedulers.background import BackgroundScheduler
+from dotenv import load_dotenv
 
+load_dotenv()
+
+numero_destino =os.environ.get('twilio_number2')
 
 route_produto = Blueprint("produto", __name__)
 # rota para consultar produtos com validade proxima
@@ -69,7 +73,7 @@ def notificar_produto_periodicamente():
         
         try:
             # Envia a mensagem via WhatsApp
-            enviar_mensagem_whatsapp(mensagem, "+5511957165078")  # Substitua pelo número de destino desejado
+            enviar_mensagem_whatsapp(mensagem, numero_destino)  # Substitua pelo número de destino desejado
             mensagens_enviadas.append(mensagem)  # Armazena a mensagem enviada
         except Exception as e:
             # Log de erro caso a mensagem não seja enviada
@@ -92,8 +96,8 @@ def notificar_produto_periodicamente():
 
 # Configuração do APScheduler para rodar a cada 24 horas
 scheduler = BackgroundScheduler()
-scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=24) # Ajuste o intervalo conforme necessário
-scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=24)  
+scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=12) # Ajuste o intervalo conforme necessário
+scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=12)  
 if not scheduler.running:
     scheduler.start()
 
