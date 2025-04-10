@@ -19,7 +19,22 @@ load_dotenv()
 
 numero_destino =os.environ.get('twilio_number2')
 
+
+
+
 route_produto = Blueprint("produto", __name__)
+
+@route_produto.route("/teste_envio")
+def teste_envio():
+    from whatsapp import enviar_mensagem_whatsapp
+    numero = os.environ.get("twilio_number2")
+    try:
+        enviar_mensagem_whatsapp("Mensagem de teste do sistema!", numero)
+        return "Mensagem enviada com sucesso!"
+    except Exception as e:
+        return f"Erro ao enviar: {e}"
+
+
 # rota para consultar produtos com validade proxima
 @route_produto.route("/consultar_por_validade_proxima")
 def consultar_por_validade_proxima():
