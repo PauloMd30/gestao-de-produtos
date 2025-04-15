@@ -12,6 +12,7 @@
     
 # config.py
 from routes import route_home, route_produto
+from whatsapp import enviar_mensagem_whatsapp
 
 def configure_all(app):
     # Defina explicitamente a pasta de templates
