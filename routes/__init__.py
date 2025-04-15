@@ -54,66 +54,6 @@ def consultar_por_validade_proxima():
     return render_template("lista_produtos.html", PRODUTOS=produtos)
 
 
-def apagar_produtos_vencidos():
-    hoje = datetime.today().date()  # Obtém a data atual
-    
-    # Usando MongoEngine para buscar os produtos vencidos
-    produtos_vencidos = Produto.objects(data_de_validade__lt=hoje)  # Seleciona os produtos com data de validade anterior à de hoje
-
-    # Verifica se há produtos vencidos
-    if produtos_vencidos:
-        for produto in produtos_vencidos:
-            produto.delete()  # Deleta o produto
-            print(f"Produto {produto.nome} da marca {produto.marca} foi deletado, pois já estava vencido.")
-    else:
-        print("Nenhum produto vencido encontrado.")
-
-    print(f"Produtos vencidos verificados e apagados em {hoje}")
-
-def notificar_produto_periodicamente():
-    hoje = datetime.today().date()
-    data_limite = hoje + timedelta(days=7)
-    
-    # Selecionando os produtos com validade próxima e que ainda não foram notificados
-    produtos = Produto.objects(
-        data_de_validade__lte=data_limite,  # Validade próxima
-        notificado=False  # Produtos que ainda não foram notificados
-    )
-    
-    mensagens_enviadas = []  # Lista para armazenar as mensagens enviadas
-    
-    # Processa todos os produtos selecionados
-    for produto in produtos:
-        mensagem = f"O produto {produto.nome} da marca {produto.marca} tem validade próxima em {produto.data_de_validade.strftime('%d/%m/%Y')}."
-        
-        try:
-            # Envia a mensagem via WhatsApp
-            enviar_mensagem_whatsapp(mensagem, numero_destino)  # Substitua pelo número de destino desejado
-            mensagens_enviadas.append(mensagem)  # Armazena a mensagem enviada
-        except Exception as e:
-            # Log de erro caso a mensagem não seja enviada
-            print(f"Erro ao enviar mensagem para o produto {produto.nome}: {e}")
-        
-        # Marca o produto como notificado
-        produto.notificado = True
-        produto.save()  # Salva a atualização no banco
-
-    # Verifica se houve mensagens enviadas e imprime
-    if mensagens_enviadas:
-        for msg in mensagens_enviadas:
-            print(f"Mensagem enviada: {msg}")
-    else:
-        print("Nenhum produto com validade próxima encontrado.")
-
-    # Log final indicando o dia em que as notificações foram enviadas
-    print(f"Notificações enviadas em {hoje}")
-
-
-# Configuração do APScheduler para rodar a cada 24 horas
-scheduler = BackgroundScheduler()
-
-
-
 # inserindo um produto 
 @route_produto.route("/", methods=["POST"])
 def inserir_produto():
