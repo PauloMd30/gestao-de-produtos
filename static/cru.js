@@ -119,6 +119,19 @@ const $cru = (e) => document.querySelector(e),
               body: g ? null : JSON.stringify(L),
             }),
             p = await $cruTypeResponse(a, b);
+          if (!b.ok && a === "json" && p.error) {
+            // Exibe a mensagem de erro
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "alert alert-danger mt-2";
+            errorDiv.textContent = p.error;
+
+            // Remove mensagens antigas
+            const oldAlerts = e.querySelectorAll(".alert");
+            oldAlerts.forEach((alert) => alert.remove());
+
+            e.prepend(errorDiv);
+            return; // Impede o restante do processamento
+          }
           d && ($cru(d).outerHTML = p),
             n && $cru(n).insertAdjacentHTML("beforeend", p),
             o && $cru(o).insertAdjacentHTML("afterbegin", p),

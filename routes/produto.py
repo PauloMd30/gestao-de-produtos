@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from datetime import datetime, timedelta, date
-from Database import Produto  # Certifique-se de importar o modelo Produto
-from bson.objectid import ObjectId  # Import ObjectId para conversão
+from Database import Produto  
+from bson.objectid import ObjectId  
 
 
 route_produto = Blueprint("produto", __name__)

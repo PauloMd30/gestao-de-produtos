@@ -7,9 +7,9 @@ def home():
      return render_template("index.html")
 
 import os
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from datetime import datetime, timedelta, date
-from Database import Produto  # Certifique-se de importar o modelo Produto
+from Database import Produto  
 from bson.objectid import ObjectId  # Import ObjectId para conversão
 from whatsapp import enviar_mensagem_whatsapp
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -54,24 +54,46 @@ def consultar_por_validade_proxima():
     return render_template("lista_produtos.html", PRODUTOS=produtos)
 
 
+
 # inserindo um produto 
 @route_produto.route("/", methods=["POST"])
 def inserir_produto():
-    data = request.json
-    # Verifique o formato da data
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Dados inválidos ou ausentes."}), 400
+
+    # Verifica e trata a data de validade
     try:
-        data_de_validade = datetime.strptime(data["data validade"], '%d/%m/%Y').date()
-    except ValueError:
-        # Caso a data esteja no formato 'YYYY-MM-DD', converta para o formato correto
-        data_de_validade = datetime.strptime(data["data validade"], '%Y-%m-%d').date()
-    
-    novo_produto = Produto(
-        nome=data["nome"],
-        marca=data["marca"],
-        codigo_de_barras=data["codigo de barras"],
-        data_de_validade=data_de_validade
-    )
-    novo_produto.save()
+        try:
+            data_de_validade = datetime.strptime(data["data validade"], '%d/%m/%Y').date()
+        except ValueError:
+            data_de_validade = datetime.strptime(data["data validade"], '%Y-%m-%d').date()
+    except (KeyError, ValueError):
+        return jsonify({"error": "Data de validade inválida ou ausente."}), 400
+
+    # Validação da data de validade
+    if data_de_validade < date.today():
+        return jsonify({"error": "A data de validade não pode ser anterior à data atual."}), 400
+
+    # Validação do código de barras
+    codigo_de_barras = data.get("codigo de barras", "")
+    if len(codigo_de_barras) != 13 or not codigo_de_barras.isdigit():
+        return jsonify({"error": "O código de barras deve ter exatamente 13 dígitos numéricos."}), 400
+
+    # Criação do produto
+    try:
+        novo_produto = Produto(
+            nome=data["nome"],
+            marca=data["marca"],
+            codigo_de_barras=codigo_de_barras,
+            data_de_validade=data_de_validade
+        )
+        novo_produto.save()
+    except Exception as e:
+        return jsonify({"error": f"Erro ao salvar o produto: {str(e)}"}), 500
+
+    # Sucesso: retorna HTML renderizado
     return render_template('item_produto.html', produto=novo_produto)
 
 #obtendo todos produtos
