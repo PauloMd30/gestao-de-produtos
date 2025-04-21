@@ -92,9 +92,15 @@ def inserir_produto():
         novo_produto.save()
     except Exception as e:
         return jsonify({"error": f"Erro ao salvar o produto: {str(e)}"}), 500
-
-    # Sucesso: retorna HTML renderizado
-    return render_template('item_produto.html', produto=novo_produto)
+    return jsonify({
+            "message": "Produto inserido com sucesso.",
+            "produto": {
+            "nome": novo_produto.nome,
+            "marca": novo_produto.marca,
+            "codigo_de_barras": novo_produto.codigo_de_barras,
+            "data_de_validade": novo_produto.data_de_validade.strftime('%Y-%m-%d')
+            }
+        }), 201
 
 #obtendo todos produtos
 

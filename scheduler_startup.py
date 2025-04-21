@@ -59,8 +59,8 @@ def notificar_produto_periodicamente():
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(notificar_produto_periodicamente, 'interval', minutes=10)
-    scheduler.add_job(apagar_produtos_vencidos, 'interval', minutes=5)
+    scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=24)
+    scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=24)
     scheduler.start()
     print("[INFO] Tarefas agendadas com sucesso.")
     print("[INFO] Scheduler iniciado.")
