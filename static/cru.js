@@ -196,8 +196,17 @@ const $cru = (e) => document.querySelector(e),
           if (targetSelector) $cru(targetSelector).innerHTML = response;
         }
 
-        // Limpa o formulário se a resposta for OK
-        if (reset && res.ok) form.reset();
+        const modo = form.dataset.modo;
+
+        if (reset && res.ok) {
+          form.reset();
+
+          if (modo === "edicao") {
+            form.querySelectorAll("input, textarea, select").forEach((el) => {
+              if (el.type !== "hidden") el.value = "";
+            });
+          }
+        }
 
         // Recarrega container se configurado
         if (reloadContainer) $cruLoadContainer(form);

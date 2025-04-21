@@ -103,7 +103,7 @@ button {
   /* Ajustes para botões em telas pequenas (smartphones) */
   @media (max-width: 992px) {
     .table-responsive td button {
-      font-size: 12px; /* Ajustando a fonte para tamanho confortável em smartphones */
+      font-size: 15px; /* Ajustando a fonte para tamanho confortável em smartphones */
       padding: 6px 12px; /* Ajuste de padding */
     }
   }
@@ -111,7 +111,7 @@ button {
   /* Ajustes para botões em telas muito pequenas (smartphones em modo retrato) */
   @media (max-width: 576px) {
     .table-responsive td button {
-      font-size: 11px; /* Ajustando a fonte para telas pequenas */
+      font-size: 15px; /* Ajustando a fonte para telas pequenas */
       padding: 5px 10px; /* Ajuste de padding */
     }
   }

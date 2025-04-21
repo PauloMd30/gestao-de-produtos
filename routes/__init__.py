@@ -10,7 +10,7 @@ import os
 from flask import Blueprint, render_template, request, jsonify
 from datetime import datetime, timedelta, date
 from Database import Produto  
-from bson.objectid import ObjectId  # Import ObjectId para conversão
+from bson.objectid import ObjectId  
 from whatsapp import enviar_mensagem_whatsapp
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
@@ -118,35 +118,58 @@ def form_produto():
     return render_template("form_produto.html")
 
 # edita um produto
-
-
 @route_produto.route('/<string:produto_id>/edit')
 def form_edit_produto(produto_id):
     produto = Produto.objects.get(id=ObjectId(produto_id))
-    produto.data_de_validade = produto.data_de_validade.strftime('%d/%m/%Y')
+
+    # Verifica se data_de_validade é datetime
+    if isinstance(produto.data_de_validade, datetime):
+        produto.data_de_validade = produto.data_de_validade.strftime('%Y-%m-%d')
+
     return render_template('form_produto.html', produto=produto)
 
-@route_produto.route('/<string:produto_id>/update', methods=['PUT'])
+
+@route_produto.route('/<string:produto_id>/update', methods=['POST'])
 def atualizar_produto(produto_id):
-    data = request.json
-    produto_editado = Produto.objects.get(id=ObjectId(produto_id))
-    produto_editado.nome = data['nome']
-    produto_editado.marca = data['marca']
-    produto_editado.codigo_de_barras = data['codigo de barras']
-    
-    # Verifique o formato da data
-    try:
-        produto_editado.data_de_validade = datetime.strptime(data['data validade'], '%d/%m/%Y').date()
-    except ValueError:
-        # Caso a data esteja no formato 'YYYY-MM-DD', converta para o formato correto
-        produto_editado.data_de_validade = datetime.strptime(data['data validade'], '%Y-%m-%d').date()
-    
-    produto_editado.save()
-    return render_template('item_produto.html', produto=produto_editado)
+    data = request.get_json()
+
+    if data.get('_method') == 'PUT':
+        produto_editado = Produto.objects.get(id=ObjectId(produto_id))
+        
+        # Validação do código de barras (13 dígitos)
+        codigo_barras = data.get('codigo de barras')
+        if len(str(codigo_barras)) != 13:
+            return jsonify({"error": "Código de barras deve ter exatamente 13 dígitos."}), 400
+        
+        # Validação da data de validade (não pode ser anterior à data atual)
+        data_validade = data.get('data validade')
+        try:
+            data_validade = datetime.strptime(data_validade, '%Y-%m-%d').date()
+            if data_validade < datetime.today().date():
+                return jsonify({"error": "Data de validade não pode ser anterior à data atual."}), 400
+        except ValueError:
+            return jsonify({"error": "Data de validade no formato inválido."}), 400
+
+        # Atualizando os dados
+        produto_editado.nome = data['nome']
+        produto_editado.marca = data['marca']
+        produto_editado.codigo_de_barras = codigo_barras
+        produto_editado.data_de_validade = data_validade
+
+        produto_editado.save()
+
+        return jsonify({
+            "message": "Produto atualizado com sucesso.",
+            "produto_id": str(produto_editado.id)
+        })
+
+    return jsonify({ "error": "Método não permitido." }), 405
+
+
 # apaga um produto
 @route_produto.route("/<string:produto_id>/delete", methods=["DELETE"])
 def deletar_produto(produto_id):
     produto = Produto.objects.get(id=ObjectId(produto_id))
     produto.delete()
-    return 'produto deletado com sucesso'
+    return 'produto deletado com sucesso', 200
 

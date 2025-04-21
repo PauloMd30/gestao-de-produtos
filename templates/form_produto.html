@@ -12,15 +12,13 @@
   {%
   endif
   %}
-  method="{% if produto %}PUT{% else %}POST{% endif %}"
+  method="{% if produto %}POST{% else %}POST{% endif %}"
+  data-modo="{{ 'edicao' if produto else 'insercao' }}"
   {%
   if
   produto
   %}
   c-swap="#produto-{{produto.id}}"
-  {%
-  else
-  %}
   {%
   endif
   %}
@@ -99,11 +97,15 @@
       {%
       if
       produto
-      %}value="{{produto.data_de_validade}}"
+      %}
+      value="{{ produto.data_de_validade.strftime('%Y-%m-%d') }}"
       {%
       endif
       %}
     />
+    {% if produto %}
+    <input type="hidden" name="_method" value="PUT" />
+    {% endif %}
   </div>
 
   <div class="button-container mt-3">
