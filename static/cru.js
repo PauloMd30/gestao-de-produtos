@@ -189,10 +189,12 @@ const $cru = (e) => document.querySelector(e),
         }
 
         // Manipulação de destino
-        if (swap) $cru(swap).outerHTML = response;
-        if (append) $cru(append).insertAdjacentHTML("beforeend", response);
-        if (prepend) $cru(prepend).insertAdjacentHTML("afterbegin", response);
-        if (targetSelector) $cru(targetSelector).innerHTML = response;
+        if (typeof response === "string") {
+          if (swap) $cru(swap).outerHTML = response;
+          if (append) $cru(append).insertAdjacentHTML("beforeend", response);
+          if (prepend) $cru(prepend).insertAdjacentHTML("afterbegin", response);
+          if (targetSelector) $cru(targetSelector).innerHTML = response;
+        }
 
         // Limpa o formulário se a resposta for OK
         if (reset && res.ok) form.reset();
