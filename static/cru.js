@@ -154,8 +154,6 @@ const $cru = (e) => document.querySelector(e),
           let responseError = await res.json();
           console.error("Erro ao enviar produto:", responseError.error);
 
-          // Aqui você pode exibir uma mensagem de erro na interface
-          // Exemplo: Exibir um alerta com a mensagem de erro
           const errorDiv = document.createElement("div");
           errorDiv.className = "alert alert-danger mt-2";
           errorDiv.textContent = responseError.error || "Erro desconhecido.";
@@ -180,7 +178,7 @@ const $cru = (e) => document.querySelector(e),
           form.prepend(successDiv);
         }
 
-        // ✅ Sucesso: mostra mensagem se houver
+        // Sucesso: mostra mensagem se houver
         if (res.ok && type === "json" && response.message) {
           const successDiv = document.createElement("div");
           successDiv.className = "alert alert-success mt-2";

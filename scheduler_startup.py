@@ -1,4 +1,3 @@
-from sched import scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from Database.models.produto import Produto
@@ -56,11 +55,10 @@ def notificar_produto_periodicamente():
 
     print(f"[LOG] Notificações enviadas em {hoje}")
 
-
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=24)
-    scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=24)
+    scheduler.add_job(notificar_produto_periodicamente, 'interval', hours=6)
+    scheduler.add_job(apagar_produtos_vencidos, 'interval', hours=6)
     scheduler.start()
     print("[INFO] Tarefas agendadas com sucesso.")
     print("[INFO] Scheduler iniciado.")

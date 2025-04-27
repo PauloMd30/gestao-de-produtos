@@ -12,7 +12,6 @@ from datetime import datetime, timedelta, date
 from Database import Produto  
 from bson.objectid import ObjectId  
 from whatsapp import enviar_mensagem_whatsapp
-from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 
 load_dotenv()
