@@ -111,7 +111,7 @@ button {
   /* Ajustes para botões em telas muito pequenas (smartphones em modo retrato) */
   @media (max-width: 576px) {
     .table-responsive td button {
-      font-size: 15px; /* Ajustando a fonte para telas pequenas */
+      font-size: 13px; /* Ajustando a fonte para telas pequenas */
       padding: 5px 10px; /* Ajuste de padding */
     }
   }

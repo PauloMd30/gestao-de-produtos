@@ -2,8 +2,8 @@ import os
 from flask import Blueprint, render_template, request, jsonify
 from datetime import datetime, timedelta, date
 from Database import Produto  
-from bson.objectid import ObjectId  
-from whatsapp import enviar_mensagem_whatsapp
+from bson.objectid import ObjectId, InvalidId  
+from mongoengine import DoesNotExist, ValidationError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -111,11 +111,16 @@ def form_produto():
 # edita um produto
 @route_produto.route('/<string:produto_id>/edit')
 def form_edit_produto(produto_id):
-    produto = Produto.objects.get(id=ObjectId(produto_id))
+    try:
+            produto = Produto.objects.get(id=ObjectId(produto_id))
+
+    except (DoesNotExist, ValidationError, InvalidId):
+            return jsonify({"mensagem":"Produto não encontrado ou ID inválido."}) , 404
 
     # Verifica se data_de_validade é datetime
     if isinstance(produto.data_de_validade, datetime):
         produto.data_de_validade = produto.data_de_validade.strftime('%Y-%m-%d')
+
 
     return render_template('form_produto.html', produto=produto)
 
@@ -124,42 +129,50 @@ def form_edit_produto(produto_id):
 def atualizar_produto(produto_id):
     data = request.get_json()
 
-    if data.get('_method') == 'PUT':
+    if data.get('_method') != 'PUT':
+        return jsonify({"error": "Método não permitido."}), 405
+
+    # Tenta converter e buscar o produto
+    try:
         produto_editado = Produto.objects.get(id=ObjectId(produto_id))
-        
-        # Validação do código de barras (13 dígitos)
-        codigo_barras = data.get('codigo de barras')
-        if len(str(codigo_barras)) != 13:
-            return jsonify({"error": "Código de barras deve ter exatamente 13 dígitos."}), 400
-        
-        # Validação da data de validade (não pode ser anterior à data atual)
-        data_validade = data.get('data validade')
-        try:
-            data_validade = datetime.strptime(data_validade, '%Y-%m-%d').date()
-            if data_validade < datetime.today().date():
-                return jsonify({"error": "Data de validade não pode ser anterior à data atual."}), 400
-        except ValueError:
-            return jsonify({"error": "Data de validade no formato inválido."}), 400
+    except (InvalidId, DoesNotExist, ValidationError):
+        return jsonify({"error": "Produto não encontrado ou ID inválido."}), 404
 
-        # Atualizando os dados
-        produto_editado.nome = data['nome']
-        produto_editado.marca = data['marca']
-        produto_editado.codigo_de_barras = codigo_barras
-        produto_editado.data_de_validade = data_validade
+    # Validação do código de barras (13 dígitos)
+    codigo_barras = data.get('codigo de barras')
+    if len(str(codigo_barras)) != 13 or not str(codigo_barras).isdigit():
+        return jsonify({"error": "Código de barras deve ter exatamente 13 dígitos numéricos."}), 400
 
-        produto_editado.save()
+    # Validação da data de validade
+    data_validade = data.get('data validade')
+    try:
+        data_validade = datetime.strptime(data_validade, '%Y-%m-%d').date()
+        if data_validade < datetime.today().date():
+            return jsonify({"error": "Data de validade não pode ser anterior à data atual."}), 400
+    except (TypeError, ValueError):
+        return jsonify({"error": "Data de validade no formato inválido."}), 400
 
-        return jsonify({
-            "message": "Produto atualizado com sucesso.",
-            "produto_id": str(produto_editado.id)
-        })
+    # Atualização
+    produto_editado.nome = data['nome']
+    produto_editado.marca = data['marca']
+    produto_editado.codigo_de_barras = codigo_barras
+    produto_editado.data_de_validade = data_validade
 
-    return jsonify({ "error": "Método não permitido." }), 405
+    produto_editado.save()
+
+    return jsonify({
+        "message": "Produto atualizado com sucesso.",
+        "produto_id": str(produto_editado.id)
+    })
 
 
 # apaga um produto
 @route_produto.route("/<string:produto_id>/delete", methods=["DELETE"])
 def deletar_produto(produto_id):
-    produto = Produto.objects.get(id=ObjectId(produto_id))
+    try:
+        produto = Produto.objects.get(id=ObjectId(produto_id))
+    except (DoesNotExist, ValidationError, InvalidId):
+        return jsonify({"error": "Produto não encontrado ou ID inválido."}), 404
     produto.delete()
-    return 'produto deletado com sucesso', 200
+    return jsonify({'mensagem': 'Produto deletado com sucesso'}), 200
+

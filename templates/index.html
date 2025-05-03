@@ -10,12 +10,16 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}" />
-   
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='styles.css')}}"
+    />
   </head>
   <body>
-
     <div class="container">
       <h1 class="text-center">Gestão de Produtos</h1>
       <!-- Fotmulario de produtos-->
@@ -26,7 +30,11 @@
       <hr />
       <h2 id="page-title" class="text-center">Produtos Próximos da Validade</h2>
       <!-- consulta por valideda-->
-      <div id="produto-container" c-container="{{url_for('produto.consultar_por_validade_proxima')}}"> </div>
+      <div
+        id="produto-container"
+        c-container="{{url_for('produto.consultar_por_validade_proxima')}}"
+      ></div>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
